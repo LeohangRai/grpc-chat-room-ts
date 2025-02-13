@@ -3,19 +3,32 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "pnpx rimraf ./dist && tsc",
+    "start": "pnpm build && node dist/server/index.js",
+    "start:dev": "ts-node src/server/index.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@grpc/grpc-js": "^1.12.6",
+    "@grpc/proto-loader": "^0.7.13",
+    "@grpc/reflection": "^1.0.4",
+    "config": "^3.3.12",
     "google-protobuf": "^3.21.4",
-    "grpc-tools": "^1.13.0"
+    "grpc-tools": "^1.13.0",
+    "js-yaml": "^4.1.0",
+    "module-alias": "^2.2.3"
   },
   "devDependencies": {
+    "@types/config": "^3.3.5",
     "@types/google-protobuf": "^3.15.12",
     "grpc_tools_node_protoc_ts": "^5.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
+  },
+  "_moduleAliases": {
+    "@protos": "dist/proto-out"
   }
 }

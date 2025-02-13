@@ -6,7 +6,7 @@ config/
 .uploads/
 
 # compiled output
-.protos
+src/proto-out
 /dist
 /node_modules
 /build
@@ -19,9 +19,6 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
-# config files
-config/default.yml
 
 # OS
 .DS_Store

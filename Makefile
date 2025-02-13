@@ -1,7 +1,7 @@
 PROTOC=node_modules/.bin/grpc_tools_node_protoc
 PROTOC_GEN_TS=node_modules/.bin/protoc-gen-ts
 PROTO_DIR=protos
-PROTO_OUT_DIR=.protos
+PROTO_OUT_DIR=./src/proto-out
 
 generate:
 	mkdir -p $(PROTO_OUT_DIR)
