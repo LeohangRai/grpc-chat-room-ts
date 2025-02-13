@@ -16,8 +16,11 @@ server.addService(ChatRoomService, {
 server.bindAsync(
   `0.0.0.0:${PORT}`,
   grpc.ServerCredentials.createInsecure(),
-  () => {
-    console.info(`Server is running at http://127.0.0.1:${PORT}`);
+  (err, port) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.info(`Server is running at http://127.0.0.1:${port}`);
   }
 );
 
