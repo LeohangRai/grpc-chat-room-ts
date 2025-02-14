@@ -3,6 +3,7 @@ import * as grpc from '@grpc/grpc-js';
 import { ChatRoomClient } from '@protos/chatroom_grpc_pb';
 import { NewsUpdate } from '@protos/chatroom_pb';
 import config from 'config';
+import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 
 const PORT = config.get<string>('app.port') || '50051';
 
@@ -10,7 +11,6 @@ const client = new ChatRoomClient(
   `localhost:${PORT}`,
   grpc.credentials.createInsecure()
 );
-console.log('client', client);
 
 const call = client.sendNewsUpdate((err, response) => {
   if (err) {
@@ -40,7 +40,14 @@ const intervalId = setInterval(() => {
   const request = new NewsUpdate();
   request.setNewsTitle(newsUpdates[i].newsTitle);
   request.setNewsContent(newsUpdates[i].newsContent);
+
+  /* set timestamp */
+  const currTimestamp = new Timestamp();
+  currTimestamp.fromDate(new Date());
+  request.setTimestamp(currTimestamp);
+
   call.write(request);
+  i++;
   if (i === newsUpdates.length - 1) {
     call.end();
     clearInterval(intervalId);

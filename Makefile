@@ -19,7 +19,7 @@ generate:
 gen: generate # alias for 'generate'
 
 clean:
-	rm $(PROTO_OUT_DIR)/*
+	rm -rf $(PROTO_OUT_DIR)/*
 
 regenerate: clean generate # alias for 'clean' and 'generate'
 

@@ -25,9 +25,10 @@ export function sendNewsUpdate(
   callback: sendUnaryData<NewsStreamStatus>
 ) {
   call.on('data', (request: NewsUpdate) => {
-    console.log('Received news update:');
+    console.log('\nReceived news update:');
     console.log('Title:', request.getNewsTitle());
     console.log('Content:', request.getNewsContent());
+    console.log('Timestamp:', request.getTimestamp()?.toDate());
   });
   call.on('error', (error) => {
     console.error(error);

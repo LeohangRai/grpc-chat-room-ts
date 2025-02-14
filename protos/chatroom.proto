@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package chatroom;
 
-// import "google/protobuf/timestamp.proto";
+import "google/protobuf/timestamp.proto";
 
 message RoomRegistrationRequest {
     string room_name = 1;
@@ -13,7 +13,7 @@ message RoomRegistrationResponse {
 }
 
 message NewsUpdate {
-    // google.protobuf.Timestamp timestamp = 1;
+    google.protobuf.Timestamp timestamp = 1;
     string news_title = 2;
     string news_content = 3;
 }
