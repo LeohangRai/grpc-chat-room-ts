@@ -5,13 +5,14 @@ import { ReflectionService } from '@grpc/reflection';
 import { ChatRoomService } from '@protos/chatroom_grpc_pb';
 import config from 'config';
 import path from 'path';
-import { registerToRoom } from '../services/chat-room.service';
+import { registerToRoom, sendNewsUpdate } from '../services/chat-room.service';
 
 const PORT = config.get<string>('app.port') || '50051';
 
 const server = new grpc.Server();
 server.addService(ChatRoomService, {
   registerToRoom,
+  sendNewsUpdate,
 });
 server.bindAsync(
   `0.0.0.0:${PORT}`,
