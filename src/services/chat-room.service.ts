@@ -14,7 +14,7 @@ import {
   RoomRegistrationResponse,
 } from '@protos/chatroom_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
+import { MessagesQueue } from '../queue/message-queue';
 
 export class ChatRoomServer implements IChatRoomServer {
   /* had to do this because `IChatRoomServer extends grpc.UntypedServiceImplementation` */
@@ -39,6 +39,7 @@ export class ChatRoomServer implements IChatRoomServer {
       console.log('Title:', request.getNewsTitle());
       console.log('Content:', request.getNewsContent());
       console.log('Timestamp:', request.getTimestamp()?.toDate());
+      MessagesQueue.addNewsToQueue(request);
     });
     call.on('error', (error) => {
       console.error(error);
@@ -52,25 +53,12 @@ export class ChatRoomServer implements IChatRoomServer {
   }
 
   async monitorChatRoom(call: ServerWritableStream<Empty, ChatMessage>) {
-    const messages = [
-      'Hello, world!',
-      'How are you doing?',
-      'I am doing great!',
-      'This is a sample message.',
-      'This is another sample message.',
-    ];
-    for (const msg of messages) {
-      const chatMessage = new ChatMessage();
-      chatMessage.setMessage(msg);
-      chatMessage.setUser('server');
-
-      const currTimestamp = new Timestamp();
-      currTimestamp.fromDate(new Date());
-      chatMessage.setTimestamp(currTimestamp);
-
-      call.write(chatMessage);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+    while (!call.cancelled) {
+      if (MessagesQueue.getMessagesCount()) {
+        const nextMessage = MessagesQueue.getNextMessage();
+        call.write(nextMessage!);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 200)); // in order to avoid blocking
     }
-    call.end();
   }
 }
