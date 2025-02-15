@@ -3,6 +3,7 @@ syntax = "proto3";
 package chatroom;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message RoomRegistrationRequest {
     string room_name = 1;
@@ -22,7 +23,14 @@ message NewsStreamStatus {
     bool is_successful = 1;
 }
 
+message ChatMessage {
+    google.protobuf.Timestamp timestamp = 1;
+    string message = 2;
+    string user = 3;
+}
+
 service ChatRoom {
     rpc RegisterToRoom(RoomRegistrationRequest) returns (RoomRegistrationResponse);
     rpc SendNewsUpdate(stream NewsUpdate) returns (NewsStreamStatus);
+    rpc MonitorChatRoom(google.protobuf.Empty) returns (stream ChatMessage);
 }
