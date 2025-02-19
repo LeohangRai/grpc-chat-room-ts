@@ -15,7 +15,7 @@ const call = client.monitorChatRoom(new Empty());
 call.on('data', (response: ChatMessage) => {
   console.log('\nReceived message:');
   console.log('Message:', response.getMessage());
-  console.log('User:', response.getUser());
+  console.log('User ID:', response.getUserId());
   console.log('Timestamp:', response.getTimestamp()?.toDate());
 });
 

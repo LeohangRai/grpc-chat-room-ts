@@ -7,16 +7,17 @@ import "google/protobuf/empty.proto";
 
 message RoomRegistrationRequest {
     string room_name = 1;
+    string user_id = 2;
 }
 
 message RoomRegistrationResponse {
-    int32 room_id = 1;
+    bool is_joined = 1;
 }
 
 message NewsUpdate {
-    google.protobuf.Timestamp timestamp = 1;
-    string news_title = 2;
-    string news_content = 3;
+    string news_title = 1;
+    string news_content = 2;
+    google.protobuf.Timestamp timestamp = 3;
 }
 
 message NewsStreamStatus {
@@ -24,13 +25,15 @@ message NewsStreamStatus {
 }
 
 message ChatMessage {
-    google.protobuf.Timestamp timestamp = 1;
-    string message = 2;
-    string user = 3;
+    string user_id = 1; // UUID of the sender
+    string room_name = 2;
+    string message = 3;
+    google.protobuf.Timestamp timestamp = 4;
 }
 
 service ChatRoom {
     rpc RegisterToRoom(RoomRegistrationRequest) returns (RoomRegistrationResponse);
     rpc SendNewsUpdate(stream NewsUpdate) returns (NewsStreamStatus);
     rpc MonitorChatRoom(google.protobuf.Empty) returns (stream ChatMessage);
+    rpc Chat(stream ChatMessage) returns (stream ChatMessage);
 }

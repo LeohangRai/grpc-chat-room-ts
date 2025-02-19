@@ -10,12 +10,13 @@ const client = new ChatRoomClient(
   `localhost:${PORT}`,
   grpc.credentials.createInsecure()
 );
+/* instead of using room registration as a unary API example, implement a unary client that provides stats regarding the number of active chat rooms or number of users in a particular chat-room, and so on */
 const request = new RoomRegistrationRequest();
 request.setRoomName('general');
 client.registerToRoom(request, (err, response) => {
   if (err) {
     console.error(err);
   } else {
-    console.log('Room ID:', response.getRoomId());
+    console.log('Room Joined:', response.getIsJoined());
   }
 });
