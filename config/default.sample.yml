@@ -1,2 +1,5 @@
 app:
   port: # default is 50051
+
+api_keys:
+  news_api: # your newsapi.org key
